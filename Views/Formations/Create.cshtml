@@ -1,0 +1,107 @@
+@model GestionFormations.Models.Formation
+@{
+    ViewData["Title"] = "Créer une Formation";
+}
+
+<div class="page-header">
+    <h2><i class="bi bi-plus-circle me-2"></i>Créer une Formation</h2>
+    <p>Ajoutez une nouvelle formation au catalogue</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-8">
+        <form asp-action="Create" class="card" style="border:none;box-shadow:var(--shadow);border-radius:var(--radius-lg);padding:1.5rem;">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Titre" class="form-label"></label>
+                <input asp-for="Titre" class="form-control" />
+                <span asp-validation-for="Titre" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label asp-for="DureeHeures" class="form-label"></label>
+                    <input asp-for="DureeHeures" class="form-control" />
+                    <span asp-validation-for="DureeHeures" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Prix" class="form-label"></label>
+                    <input asp-for="Prix" class="form-control" />
+                    <span asp-validation-for="Prix" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="NombrePlaces" class="form-label"></label>
+                    <input asp-for="NombrePlaces" class="form-control" />
+                    <span asp-validation-for="NombrePlaces" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label asp-for="DateDebut" class="form-label"></label>
+                    <input asp-for="DateDebut" class="form-control" type="date" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="DateFin" class="form-label"></label>
+                    <input asp-for="DateFin" class="form-control" type="date" />
+                </div>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label asp-for="CategorieId" class="form-label"></label>
+                    <select asp-for="CategorieId" class="form-select">
+                        <option value="">-- Sélectionner --</option>
+                        @if (ViewBag.Categories != null)
+                        {
+                            @foreach (GestionFormations.Models.Categorie cat in ViewBag.Categories)
+                            {
+                                <option value="@cat.Id">@cat.Nom</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="FormateurId" class="form-label"></label>
+                    <select asp-for="FormateurId" class="form-select">
+                        <option value="">-- Sélectionner --</option>
+                        @if (ViewBag.Formateurs != null)
+                        {
+                            @foreach (GestionFormations.Models.Formateur f in ViewBag.Formateurs)
+                            {
+                                <option value="@f.Id">@f.Prenom @f.Nom</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImageUrl" class="form-label"></label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="URL de l'image" />
+            </div>
+            <div class="mb-3 form-check">
+                <input asp-for="EstActive" class="form-check-input" />
+                <label asp-for="EstActive" class="form-check-label"></label>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Créer</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Annuler</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <div class="card" style="border:none;box-shadow:var(--shadow);border-radius:var(--radius-lg);overflow:hidden;">
+            <div class="card-header" style="background:linear-gradient(135deg,var(--info),#2563eb);color:#fff;border:none;">
+                <h6 class="mb-0"><i class="bi bi-info-circle me-2"></i>Modules</h6>
+            </div>
+            <div class="card-body">
+                <p class="small mb-0" style="color:var(--text-muted);">
+                    Après la création de la formation, vous pourrez ajouter des modules depuis la page <strong>Modifier</strong>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

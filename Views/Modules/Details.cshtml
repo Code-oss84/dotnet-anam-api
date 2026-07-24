@@ -1,0 +1,82 @@
+@model GestionFormations.Models.Module
+@{
+    ViewData["Title"] = "Détails du Module";
+}
+
+<div class="page-header">
+    <h2><i class="bi bi-collection me-2"></i>@Model.Titre</h2>
+    <p>Détails du module de formation</p>
+</div>
+
+<div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+    <div class="card-body p-4">
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="p-3 rounded-3" style="background: linear-gradient(135deg, #667eea11, #764ba211);">
+                    <small class="text-uppercase fw-semibold text-muted d-block mb-1">Formation</small>
+                    <span class="fw-bold fs-5">@(Model.Formation?.Titre ?? "—")</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 rounded-3" style="background: linear-gradient(135deg, #f093fb11, #f5576c11);">
+                    <small class="text-uppercase fw-semibold text-muted d-block mb-1">Ordre</small>
+                    <span class="badge bg-secondary rounded-pill fs-6">@Model.Ordre</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 rounded-3" style="background: linear-gradient(135deg, #4facfe11, #00f2fe11);">
+                    <small class="text-uppercase fw-semibold text-muted d-block mb-1">Durée</small>
+                    <span class="fw-bold fs-5"><i class="bi bi-clock me-1"></i>@Model.DureeHeures heures</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <small class="text-uppercase fw-semibold text-muted d-block mb-2">Description</small>
+            <p class="mb-0">@(Model.Description ?? "Aucune description")</p>
+        </div>
+
+        @if (Model.Contenus != null && Model.Contenus.Any())
+        {
+            <div class="mt-4">
+                <h5 class="mb-3"><i class="bi bi-file-earmark-text me-2"></i>Contenus <span class="badge bg-info rounded-pill">@(Model.Contenus.Count)</span></h5>
+                <div class="list-group">
+                    @foreach (var contenu in Model.Contenus.OrderBy(c => c.Ordre))
+                    {
+                        <a asp-controller="Contenus" asp-action="Details" asp-route-id="@contenu.Id" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0 mb-2 rounded-3" style="box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                            <span class="d-flex align-items-center">
+                                <span class="badge bg-secondary rounded-pill me-3">@contenu.Ordre</span>
+                                <span>
+                                    @switch (contenu.Type)
+                                    {
+                                        case GestionFormations.Models.TypeContenu.Cours:
+                                            <span class="content-tag cours">Cours</span>
+                                            break;
+                                        case GestionFormations.Models.TypeContenu.Exercice:
+                                            <span class="content-tag exercice">Exercice</span>
+                                            break;
+                                        case GestionFormations.Models.TypeContenu.Quiz:
+                                            <span class="content-tag quiz">Quiz</span>
+                                            break;
+                                        case GestionFormations.Models.TypeContenu.Examen:
+                                            <span class="content-tag examen">Examen</span>
+                                            break;
+                                    }
+                                    <span class="ms-2 fw-semibold">@contenu.Titre</span>
+                                </span>
+                            </span>
+                            <span class="text-muted small"><i class="bi bi-clock me-1"></i>@contenu.DureeMinutes min</span>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    <div class="card-footer bg-transparent border-0 pt-0 px-4 pb-4">
+        <div class="d-flex gap-2">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="bi bi-pencil me-2"></i>Modifier</a>
+            <a asp-controller="Contenus" asp-action="Create" asp-route-moduleId="@Model.Id" class="btn btn-success"><i class="bi bi-plus me-2"></i>Ajouter un contenu</a>
+            <a asp-action="Index" class="btn btn-outline-secondary">Retour</a>
+        </div>
+    </div>
+</div>

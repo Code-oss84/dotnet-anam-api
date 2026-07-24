@@ -1,0 +1,484 @@
+@{
+    ViewData["Title"] = "Formateur IA";
+    var formations = ViewBag.Formations as List<GestionFormations.Models.Formation> ?? new();
+    var modules = ViewBag.Modules as List<GestionFormations.Models.Module> ?? new();
+    int? selectedFormationId = ViewBag.FormationId;
+}
+
+<style>
+    .ai-trainer-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    .ai-trainer-header {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        border-radius: 1rem;
+        padding: 2rem 2.5rem;
+        margin-bottom: 2rem;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    .ai-trainer-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+    .ai-trainer-header h2 {
+        font-weight: 700;
+        font-size: 1.8rem;
+        margin: 0;
+        position: relative;
+    }
+    .ai-trainer-header p {
+        opacity: 0.7;
+        margin: 0.5rem 0 0;
+        font-size: 0.95rem;
+        position: relative;
+    }
+    .ai-sidebar-card {
+        border: none;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
+    }
+    .ai-sidebar-card:hover {
+        box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+    .ai-sidebar-card .card-header {
+        border: none;
+        padding: 1.1rem 1.25rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+    }
+    .ai-sidebar-card .card-body {
+        padding: 1.25rem;
+    }
+    .ai-config-card .card-header {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+    }
+    .ai-steps-card .card-header {
+        background: linear-gradient(135deg, #6366f1, #4f46e5);
+        color: white;
+    }
+    .ai-context-card .card-header {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+    }
+    .ai-form-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+    }
+    .ai-form-select {
+        border: 2px solid #e5e7eb;
+        border-radius: 0.75rem;
+        padding: 0.65rem 1rem;
+        font-size: 0.92rem;
+        transition: all 0.2s ease;
+        background-color: #fafafa;
+    }
+    .ai-form-select:focus {
+        border-color: #10b981;
+        box-shadow: 0 0 0 3px rgba(16,185,129,0.15);
+        background-color: #fff;
+    }
+    .ai-btn-start {
+        background: linear-gradient(135deg, #10b981, #059669);
+        border: none;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1.25rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+    }
+    .ai-btn-start:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(16,185,129,0.4);
+    }
+    .ai-btn-start:disabled {
+        opacity: 0.7;
+        transform: none;
+    }
+    .ai-btn-stop {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        border: none;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1.25rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(239,68,68,0.3);
+    }
+    .ai-btn-stop:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(239,68,68,0.4);
+    }
+    .ai-video-card {
+        border: none;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .ai-video-card .card-header {
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        border: none;
+        padding: 1rem 1.25rem;
+        font-weight: 600;
+    }
+    .ai-video-container {
+        width: 100%;
+        min-height: 520px;
+        background: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+    }
+    .ai-video-placeholder {
+        text-align: center;
+        color: rgba(255,255,255,0.5);
+        position: absolute;
+    }
+    .ai-video-placeholder .robot-icon {
+        font-size: 4rem;
+        opacity: 0.3;
+        animation: float 3s ease-in-out infinite;
+    }
+    .ai-video-placeholder h4 {
+        font-weight: 600;
+        margin-top: 1rem;
+        color: rgba(255,255,255,0.4);
+    }
+    .ai-video-placeholder p {
+        color: rgba(255,255,255,0.25);
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+    @@keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    .ai-status-badge {
+        padding: 0.4rem 0.85rem;
+        border-radius: 2rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+    }
+    .ai-status-waiting { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); }
+    .ai-status-loading { background: #fbbf24; color: #78350f; }
+    .ai-status-connecting { background: #60a5fa; color: #1e3a5f; }
+    .ai-status-connected { background: #34d399; color: #064e3b; }
+    .ai-status-error { background: #f87171; color: #7f1d1d; }
+    .ai-status-off { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); }
+    .ai-step-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .ai-step-list li {
+        display: flex;
+        align-items: flex-start;
+        padding: 0.6rem 0;
+        font-size: 0.88rem;
+        color: #4b5563;
+        border-bottom: 1px solid #f3f4f6;
+    }
+    .ai-step-list li:last-child { border-bottom: none; }
+    .ai-step-num {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #6366f1, #4f46e5);
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.72rem;
+        font-weight: 700;
+        margin-right: 0.75rem;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    .ai-context-content h6 {
+        font-weight: 700;
+        color: #1f2937;
+    }
+    .ai-context-tag {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        border-radius: 0.4rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 0.3rem;
+        margin-bottom: 0.3rem;
+    }
+    .ai-context-tag.video { background: #dbeafe; color: #1e40af; }
+    .ai-context-tag.text { background: #dcfce7; color: #166534; }
+    .ai-context-tag.quiz { background: #fef3c7; color: #92400e; }
+    .ai-context-tag.doc { background: #ede9fe; color: #5b21b6; }
+</style>
+
+<div class="ai-trainer-wrapper">
+    <div class="ai-trainer-header">
+        <h2><i class="bi bi-robot me-2"></i>Formateur IA</h2>
+        <p>Session interactive de formation avec un assistant intelligent</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="ai-sidebar-card card mb-4 ai-config-card">
+                <div class="card-header">
+                    <i class="bi bi-sliders me-2"></i>Configuration
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="ai-form-label">Formation</label>
+                        <select id="formationSelect" class="form-select ai-form-select">
+                            <option value="">-- Choisir une formation --</option>
+                            @foreach (var f in formations)
+                            {
+                                <option value="@f.Id" selected="@(f.Id == selectedFormationId)">@f.Titre</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="ai-form-label">Module</label>
+                        <select id="moduleSelect" class="form-select ai-form-select">
+                            <option value="">-- Choisir un module --</option>
+                            @foreach (var m in modules)
+                            {
+                                <option value="@m.Id">@m.Titre</option>
+                            }
+                        </select>
+                    </div>
+                    <button id="loadModuleBtn" class="btn ai-btn-start w-100">
+                        <i class="bi bi-play-circle me-2"></i>Démarrer la session
+                    </button>
+                    <button id="stopBtn" class="btn ai-btn-stop w-100 mt-2" style="display:none;">
+                        <i class="bi bi-stop-circle me-2"></i>Arrêter la session
+                    </button>
+                </div>
+            </div>
+
+            <div id="moduleContext" class="ai-sidebar-card card mb-4 ai-context-card" style="display:none;">
+                <div class="card-header">
+                    <i class="bi bi-collection me-2"></i>Contenu du module
+                </div>
+                <div class="card-body" id="moduleContextBody"></div>
+            </div>
+
+            <div class="ai-sidebar-card card ai-steps-card">
+                <div class="card-header">
+                    <i class="bi bi-lightbulb me-2"></i>Comment ça marche
+                </div>
+                <div class="card-body">
+                    <ul class="ai-step-list">
+                        <li><span class="ai-step-num">1</span>Sélectionnez une formation</li>
+                        <li><span class="ai-step-num">2</span>Choisissez un module</li>
+                        <li><span class="ai-step-num">3</span>Cliquez sur "Démarrer"</li>
+                        <li><span class="ai-step-num">4</span>L'avatar présente le module</li>
+                        <li><span class="ai-step-num">5</span>Parlez pour interagir</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="ai-video-card card">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-camera-video-fill me-2 text-white"></i>
+                        <span class="text-white fw-semibold">Session en direct</span>
+                    </div>
+                    <span id="connectionStatus" class="ai-status-badge ai-status-waiting">En attente</span>
+                </div>
+                <div class="card-body p-0">
+                    <div id="videoContainer" class="ai-video-container">
+                        <video id="personaVideo" autoplay playsinline style="width:100%;max-height:520px;object-fit:contain;display:none;"></video>
+                        <div id="videoOverlay" class="ai-video-placeholder">
+                            <i class="bi bi-robot robot-icon"></i>
+                            <h4>Formateur IA</h4>
+                            <p>Sélectionnez un module et démarrez la session</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="module">
+        import { createClient, AnamEvent } from "https://esm.sh/@@anam-ai/js-sdk@latest";
+
+        let anamClient = null;
+
+        function setStatus(text, type) {
+            var el = document.getElementById('connectionStatus');
+            el.textContent = text;
+            el.className = 'ai-status-badge ai-status-' + type;
+        }
+
+        var stopBtn = document.getElementById('stopBtn');
+        stopBtn.addEventListener('click', async function() {
+            if (anamClient) {
+                await anamClient.stopStreaming();
+                anamClient = null;
+            }
+            document.getElementById('personaVideo').style.display = 'none';
+            document.getElementById('videoOverlay').style.display = 'block';
+            setStatus('Arrêté', 'off');
+            stopBtn.style.display = 'none';
+            document.getElementById('loadModuleBtn').style.display = 'block';
+        });
+
+        document.getElementById('formationSelect').addEventListener('change', function() {
+            var formationId = this.value;
+            if (formationId) {
+                window.location.href = '/AiTrainer?formationId=' + formationId;
+            } else {
+                window.location.href = '/AiTrainer';
+            }
+        });
+
+        document.getElementById('loadModuleBtn').addEventListener('click', async function() {
+            var moduleId = document.getElementById('moduleSelect').value;
+            if (!moduleId) {
+                alert('Veuillez sélectionner un module');
+                return;
+            }
+
+            var btn = this;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Démarrage...';
+
+            try {
+                setStatus('Chargement...', 'loading');
+
+                var response = await fetch('/AiTrainer/GetModuleContext', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'moduleId=' + moduleId
+                });
+                var data = await response.json();
+
+                var ctxDiv = document.getElementById('moduleContext');
+                var ctxBody = document.getElementById('moduleContextBody');
+
+                var contenusHtml = '';
+                if (data.contenus && data.contenus.length > 0) {
+                    contenusHtml = '<div class="mt-2">' +
+                        data.contenus.map(function(c) {
+                            var tagClass = 'text';
+                            if (c.type === 'Video' || c.type === 'video') tagClass = 'video';
+                            else if (c.type === 'Quiz' || c.type === 'quiz') tagClass = 'quiz';
+                            else if (c.type === 'Document' || c.type === 'document') tagClass = 'doc';
+                            return '<span class="ai-context-tag ' + tagClass + '">' + c.titre + '</span>';
+                        }).join('') +
+                        '</div>';
+                }
+
+                ctxDiv.style.display = 'block';
+                ctxBody.innerHTML = '<h6>' + data.titre + '</h6>' +
+                    '<p class="text-muted mb-2">' + (data.description || '') + '</p>' +
+                    '<p class="mb-2"><small class="text-muted"><i class="bi bi-book me-1"></i>' + (data.formation || '') + '</small></p>' +
+                    contenusHtml;
+
+                setStatus('Création session...', 'connecting');
+
+                var tokenResponse = await fetch('/AiTrainer/CreateSessionToken', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!tokenResponse.ok) {
+                    var errData = await tokenResponse.json();
+                    throw new Error(errData.error || 'Erreur lors de la création du token');
+                }
+
+                var tokenData = await tokenResponse.json();
+                setStatus('Connexion...', 'connecting');
+
+                if (anamClient) {
+                    await anamClient.stopStreaming();
+                }
+
+                anamClient = createClient(tokenData.sessionToken, {
+                    disableInputAudio: false
+                });
+
+                anamClient.addListener(AnamEvent.SESSION_READY, async function() {
+                    setStatus('En ligne', 'connected');
+                    document.getElementById('personaVideo').style.display = 'block';
+                    document.getElementById('videoOverlay').style.display = 'none';
+                    btn.style.display = 'none';
+                    stopBtn.style.display = 'block';
+
+                    try {
+                        var contextInfo = 'Le joueur vient de démarrer une session de formation.\n' +
+                            'Formation choisie: ' + data.formation + '\n' +
+                            'Module choisi: ' + data.titre + '\n' +
+                            'Description: ' + (data.description || '') + '\n';
+
+                        if (data.contenus && data.contenus.length > 0) {
+                            contextInfo += 'Contenus du module:\n' +
+                                data.contenus.map(function(c) {
+                                    return '- ' + c.titre + ' (' + c.type + '): ' + (c.texte || '').substring(0, 500);
+                                }).join('\n');
+                        }
+
+                        contextInfo += '\nInstructions: Tu es un formateur IA. ' +
+                            'Le joueur a choisi la formation "' + data.formation + '" et le module "' + data.titre + '". ' +
+                            'Présente ce module maintenant de manière engageante et pédagogique. ' +
+                            'Explique le contenu, puis sois prêt à répondre aux questions du joueur. ' +
+                            'Commence directement par ta présentation, ne demande pas de confirmation. ' +
+                            'Utilise un langage clair, simple et encourageant.';
+
+                        await anamClient.addContext(contextInfo);
+
+                        await anamClient.sendUserMessage(
+                            'Bonjour! Je commence la formation "' + data.formation + '", module "' + data.titre + '". ' +
+                            'Présente-moi ce module s\'il te plaît.'
+                        );
+                    } catch (e) {
+                        console.error('Erreur contexte:', e);
+                    }
+                });
+
+                anamClient.addListener(AnamEvent.CONNECTION_CLOSED, function() {
+                    setStatus('Déconnecté', 'off');
+                });
+
+                anamClient.addListener(AnamEvent.MIC_PERMISSION_DENIED, function() {
+                    setStatus('Micro refusé', 'error');
+                });
+
+                await anamClient.streamToVideoElement("personaVideo");
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                setStatus('Erreur', 'error');
+                alert('Erreur: ' + error.message);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-play-circle me-2"></i>Démarrer la session';
+            }
+        });
+    </script>
+}

@@ -1,0 +1,98 @@
+@model GestionFormations.Models.Contenu
+@{
+    ViewData["Title"] = "Détails du Contenu";
+}
+
+<div class="page-header">
+    <h2><i class="bi bi-file-earmark-text me-2"></i>@Model.Titre</h2>
+    <p>Détails du contenu pédagogique</p>
+</div>
+
+<div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                @switch (Model.Type)
+                {
+                    case GestionFormations.Models.TypeContenu.Cours:
+                        <span class="content-tag cours fs-6"><i class="bi bi-book me-1"></i>Cours</span>
+                        break;
+                    case GestionFormations.Models.TypeContenu.Exercice:
+                        <span class="content-tag exercice fs-6"><i class="bi bi-pencil me-1"></i>Exercice</span>
+                        break;
+                    case GestionFormations.Models.TypeContenu.Examen:
+                        <span class="content-tag examen fs-6"><i class="bi bi-clipboard-check me-1"></i>Examen</span>
+                        break;
+                    case GestionFormations.Models.TypeContenu.Quiz:
+                        <span class="content-tag quiz fs-6"><i class="bi bi-question-circle me-1"></i>Quiz</span>
+                        break;
+                }
+            </div>
+            <span class="text-muted"><i class="bi bi-clock me-1"></i>@Model.DureeMinutes minutes</span>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <div class="mb-4">
+                <small class="text-uppercase fw-semibold text-muted d-block mb-2">Description</small>
+                <p class="mb-0">@Model.Description</p>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Texte))
+        {
+            <div class="mb-4">
+                <small class="text-uppercase fw-semibold text-muted d-block mb-2">Contenu</small>
+                <div class="p-4 rounded-3" style="background: #f8f9fa; border-left: 4px solid #667eea;">
+                    @Html.Raw(Model.Texte)
+                </div>
+            </div>
+        }
+
+        <div class="row g-3 mb-3">
+            @if (!string.IsNullOrEmpty(Model.VideoUrl))
+            {
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3 border" style="border-color: #e0e0e0 !important;">
+                        <small class="text-uppercase fw-semibold text-muted d-block mb-2"><i class="bi bi-play-circle me-1"></i>Vidéo</small>
+                        <a href="@Model.VideoUrl" target="_blank" class="btn btn-outline-primary">
+                            <i class="bi bi-play me-2"></i>Regarder la vidéo
+                        </a>
+                    </div>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.DocumentUrl))
+            {
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3 border" style="border-color: #e0e0e0 !important;">
+                        <small class="text-uppercase fw-semibold text-muted d-block mb-2"><i class="bi bi-file-earmark me-1"></i>Document</small>
+                        <a href="@Model.DocumentUrl" target="_blank" class="btn btn-outline-secondary">
+                            <i class="bi bi-download me-2"></i>Télécharger le document
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if ((Model.Type == GestionFormations.Models.TypeContenu.Examen || Model.Type == GestionFormations.Models.TypeContenu.Quiz) && Model.Questions != null && Model.Questions.Any())
+        {
+            <div class="mt-4 p-3 rounded-3" style="background: linear-gradient(135deg, #11998e11, #38ef7d11);">
+                <h5 class="mb-2"><i class="bi bi-question-circle me-2"></i>Questions <span class="badge bg-success rounded-pill">@(Model.Questions.Count)</span></h5>
+                <a asp-controller="Quiz" asp-action="Passer" asp-route-contenuId="@Model.Id" class="btn btn-success">
+                    <i class="bi bi-play me-2"></i>Passer le quiz
+                </a>
+            </div>
+        }
+    </div>
+    <div class="card-footer bg-transparent border-0 pt-0 px-4 pb-4">
+        <div class="d-flex gap-2">
+            @if (User.IsInRole("Admin") || User.IsInRole("Formateur"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="bi bi-pencil me-2"></i>Modifier</a>
+                <a asp-controller="Questions" asp-action="Create" asp-route-contenuId="@Model.Id" class="btn btn-success"><i class="bi bi-plus me-2"></i>Ajouter une question</a>
+            }
+            <a asp-action="Index" asp-route-moduleId="@Model.ModuleId" class="btn btn-outline-secondary">Retour</a>
+        </div>
+    </div>
+</div>

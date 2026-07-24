@@ -1,0 +1,87 @@
+@model IEnumerable<GestionFormations.Models.Formation>
+@{
+    ViewData["Title"] = "Formations";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="page-header mb-0 flex-grow-1 me-4" style="margin-bottom:0 !important;">
+        <h2><i class="bi bi-book me-2"></i>Catalogue des Formations</h2>
+        <p>Explorez nos formations disponibles</p>
+    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-2"></i>Nouvelle Formation</a>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card" style="border:none;box-shadow:var(--shadow);border-radius:var(--radius-lg);">
+        <div class="card-body text-center py-5">
+            <i class="bi bi-book" style="font-size:3rem;color:var(--border);"></i>
+            <p class="text-muted mt-3 mb-0">Aucune formation disponible pour le moment.</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var formation in Model)
+        {
+            <div class="col-md-4">
+                <div class="card h-100" style="border:none;border-radius:var(--radius-lg);box-shadow:var(--shadow);overflow:hidden;">
+                    @if (!string.IsNullOrEmpty(formation.ImageUrl))
+                    {
+                        <img src="@formation.ImageUrl" class="card-img-top" alt="@formation.Titre" style="height:200px;object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div class="card-img-top d-flex align-items-center justify-content-center" style="height:200px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#a855f7 100%);">
+                            <i class="bi bi-book display-3" style="color:rgba(255,255,255,0.8);"></i>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <div class="mb-2">
+                            @if (formation.Categorie != null)
+                            {
+                                <span class="badge" style="background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;">@formation.Categorie.Nom</span>
+                            }
+                            @if (!formation.EstActive)
+                            {
+                                <span class="badge bg-secondary">Inactive</span>
+                            }
+                        </div>
+                        <h5 class="card-title fw-bold" style="color:var(--text);">@formation.Titre</h5>
+                        <p class="card-text small" style="color:var(--text-muted);">
+                            @(formation.Description?.Length > 100 ? formation.Description.Substring(0, 100) + "..." : formation.Description)
+                        </p>
+                        <ul class="list-unstyled small" style="color:var(--text-muted);">
+                            <li class="mb-1"><i class="bi bi-calendar me-2"></i>@formation.DateDebut.ToString("dd/MM/yyyy") - @formation.DateFin.ToString("dd/MM/yyyy")</li>
+                            <li class="mb-1"><i class="bi bi-clock me-2"></i>@formation.DureeHeures heures</li>
+                            <li class="mb-1"><i class="bi bi-people me-2"></i>@formation.NombrePlaces places</li>
+                            @if (formation.Formateur != null)
+                            {
+                                <li class="mb-1"><i class="bi bi-person me-2"></i>@formation.Formateur.Prenom @formation.Formateur.Nom</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="card-footer" style="background:var(--surface);border-top:1px solid var(--border);">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold fs-5" style="color:var(--primary);">@formation.Prix.ToString("N0") MAD</span>
+                            <div>
+                                <a asp-action="Details" asp-route-id="@formation.Id" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-info-circle me-1"></i>Détails
+                                </a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@formation.Id" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@formation.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

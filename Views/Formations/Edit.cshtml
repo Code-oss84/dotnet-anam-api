@@ -1,0 +1,149 @@
+@model GestionFormations.Models.Formation
+@{
+    ViewData["Title"] = "Modifier la Formation";
+    var modules = Model.Modules?.ToList() ?? new List<GestionFormations.Models.Module>();
+}
+
+<div class="page-header">
+    <h2><i class="bi bi-pencil me-2"></i>Modifier la Formation</h2>
+    <p>Mettez à jour les informations et gérez les modules</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-8">
+        <form asp-action="Edit" class="card mb-4" style="border:none;box-shadow:var(--shadow);border-radius:var(--radius-lg);padding:1.5rem;">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label asp-for="Titre" class="form-label"></label>
+                <input asp-for="Titre" class="form-control" />
+                <span asp-validation-for="Titre" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label asp-for="DureeHeures" class="form-label"></label>
+                    <input asp-for="DureeHeures" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Prix" class="form-label"></label>
+                    <input asp-for="Prix" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="NombrePlaces" class="form-label"></label>
+                    <input asp-for="NombrePlaces" class="form-control" />
+                </div>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label asp-for="DateDebut" class="form-label"></label>
+                    <input asp-for="DateDebut" class="form-control" type="date" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="DateFin" class="form-label"></label>
+                    <input asp-for="DateFin" class="form-control" type="date" />
+                </div>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label asp-for="CategorieId" class="form-label"></label>
+                    <select asp-for="CategorieId" class="form-select">
+                        @if (ViewBag.Categories != null)
+                        {
+                            @foreach (GestionFormations.Models.Categorie cat in ViewBag.Categories)
+                            {
+                                <option value="@cat.Id" selected="@(cat.Id == Model.CategorieId)">@cat.Nom</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="FormateurId" class="form-label"></label>
+                    <select asp-for="FormateurId" class="form-select">
+                        <option value="">-- Sélectionner --</option>
+                        @if (ViewBag.Formateurs != null)
+                        {
+                            @foreach (GestionFormations.Models.Formateur f in ViewBag.Formateurs)
+                            {
+                                <option value="@f.Id" selected="@(f.Id == Model.FormateurId)">@f.Prenom @f.Nom</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImageUrl" class="form-label"></label>
+                <input asp-for="ImageUrl" class="form-control" />
+            </div>
+            <div class="mb-3 form-check">
+                <input asp-for="EstActive" class="form-check-input" />
+                <label asp-for="EstActive" class="form-check-label"></label>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Enregistrer</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Annuler</a>
+            </div>
+        </form>
+
+        <div class="card" style="border:none;box-shadow:var(--shadow);border-radius:var(--radius-lg);overflow:hidden;">
+            <div class="card-header d-flex justify-content-between align-items-center" style="background:linear-gradient(135deg,var(--darker),var(--dark));color:#fff;border:none;">
+                <h5 class="mb-0"><i class="bi bi-collection me-2"></i>Modules de la formation (@modules.Count)</h5>
+                <a asp-controller="Modules" asp-action="Create" asp-route-formationId="@Model.Id" class="btn btn-sm btn-success">
+                    <i class="bi bi-plus me-1"></i>Ajouter un module
+                </a>
+            </div>
+            <div class="card-body p-0">
+                @if (modules.Any())
+                {
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Ordre</th>
+                                <th>Titre</th>
+                                <th>Durée</th>
+                                <th>Contenus</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in modules)
+                            {
+                                <tr>
+                                    <td><span class="badge bg-secondary">@m.Ordre</span></td>
+                                    <td class="fw-bold">@m.Titre</td>
+                                    <td>@m.DureeHeures h</td>
+                                    <td><span class="badge bg-info">@(m.Contenus?.Count ?? 0)</span></td>
+                                    <td>
+                                        <a asp-controller="Modules" asp-action="Edit" asp-route-id="@m.Id" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a asp-controller="Modules" asp-action="Delete" asp-route-id="@m.Id" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                        <a asp-controller="Contenus" asp-action="Index" asp-route-moduleId="@m.Id" class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <i class="bi bi-collection" style="font-size:3rem;color:var(--border);"></i>
+                        <p class="mt-3" style="color:var(--text-muted);">Aucun module pour cette formation.</p>
+                        <a asp-controller="Modules" asp-action="Create" asp-route-formationId="@Model.Id" class="btn btn-primary btn-sm">
+                            <i class="bi bi-plus me-1"></i>Ajouter le premier module
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+@model IEnumerable<GestionFormations.Models.Inscription>
+@{
+    ViewData["Title"] = "Mes Inscriptions";
+}
+
+<div class="page-header">
+    <h2><i class="bi bi-journal-check me-2"></i>Mes Inscriptions</h2>
+    <p>Suivi de vos inscriptions aux formations</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+        <div class="card-body text-center p-5">
+            <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+            <p class="mt-3 fs-5 text-muted">Vous n'avez aucune inscription.</p>
+            <a asp-controller="Formations" asp-action="Index" class="btn btn-primary mt-2"><i class="bi bi-search me-2"></i>Parcourir les formations</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var inscription in Model)
+        {
+            <div class="col-md-6">
+                <div class="card h-100" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="card-title fw-bold mb-1">@inscription.Formation?.Titre</h5>
+                                <p class="text-muted mb-0 small">@inscription.Formation?.Categorie?.Nom</p>
+                            </div>
+                            @switch (inscription.Statut)
+                            {
+                                case GestionFormations.Models.StatutInscription.EnAttente:
+                                    <span class="badge bg-warning rounded-pill">En attente</span>
+                                    break;
+                                case GestionFormations.Models.StatutInscription.Acceptee:
+                                    <span class="badge bg-success rounded-pill">Acceptée</span>
+                                    break;
+                                case GestionFormations.Models.StatutInscription.Refusee:
+                                    <span class="badge bg-danger rounded-pill">Refusée</span>
+                                    break;
+                                case GestionFormations.Models.StatutInscription.Terminee:
+                                    <span class="badge bg-info rounded-pill">Terminée</span>
+                                    break;
+                            }
+                        </div>
+                        <ul class="list-unstyled small text-muted mt-3">
+                            <li class="mb-1"><i class="bi bi-calendar me-2"></i>Inscrit le @inscription.DateInscription.ToString("dd/MM/yyyy")</li>
+                            <li><i class="bi bi-person me-2"></i>Formateur : @inscription.Formation?.Formateur?.Prenom @inscription.Formation?.Formateur?.Nom</li>
+                        </ul>
+
+                        @if (inscription.Statut == GestionFormations.Models.StatutInscription.Acceptee)
+                        {
+                            <div class="progress mt-3" style="height:8px; border-radius: 1rem;">
+                                <div class="progress-bar bg-success" style="width:@inscription.Progression%; border-radius: 1rem;"></div>
+                            </div>
+                            <small class="text-muted">@inscription.Progression% complété</small>
+
+                            <div class="mt-3 d-flex gap-2">
+                                <a asp-controller="Formations" asp-action="Details" asp-route-id="@inscription.FormationId" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye me-1"></i>Voir la formation
+                                </a>
+                                <a asp-controller="AiTrainer" asp-action="Index" asp-route-formationId="@inscription.FormationId" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-robot me-1"></i>Former avec l'IA
+                                </a>
+                            </div>
+                        }
+
+                        @if (inscription.NoteFinale.HasValue)
+                        {
+                            <div class="mt-3 p-2" style="background: #f0f7ff; border-radius: 0.5rem;">
+                                <span class="fs-5 fw-bold text-primary"><i class="bi bi-star me-2"></i>Note : @inscription.NoteFinale.Value.ToString("F1")/20</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

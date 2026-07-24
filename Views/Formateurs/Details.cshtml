@@ -1,0 +1,51 @@
+@model GestionFormations.Models.Formateur
+@{
+    ViewData["Title"] = "Détails du Formateur";
+}
+
+<div class="page-header">
+    <h2><i class="bi bi-person-badge me-2"></i>@Model.Prenom @Model.Nom</h2>
+    <p>Fiche détaillée du formateur</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4 text-center">
+        <div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div class="card-body p-4">
+                @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+                {
+                    <img src="@Model.PhotoUrl" class="rounded-circle mb-3" alt="@Model.Prenom" style="width:150px;height:150px;object-fit:cover;" />
+                }
+                else
+                {
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:150px;height:150px;">
+                        <i class="bi bi-person display-1"></i>
+                    </div>
+                }
+                <div>
+                    <span class="badge @(Model.EstActif ? "bg-success" : "bg-secondary") rounded-pill fs-6">@(Model.EstActif ? "Actif" : "Inactif")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div class="card-body p-4">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 text-uppercase small fw-semibold">Email</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
+                    <dt class="col-sm-4 text-uppercase small fw-semibold">Téléphone</dt>
+                    <dd class="col-sm-8">@(Model.Telephone ?? "Non renseigné")</dd>
+                    <dt class="col-sm-4 text-uppercase small fw-semibold">Spécialité</dt>
+                    <dd class="col-sm-8">@(Model.Specialite ?? "Non renseignée")</dd>
+                    <dt class="col-sm-4 text-uppercase small fw-semibold">Biographie</dt>
+                    <dd class="col-sm-8">@(Model.Biographie ?? "Non renseignée")</dd>
+                </dl>
+            </div>
+            <div class="card-footer bg-white border-0 pb-4">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="bi bi-pencil me-2"></i>Modifier</a>
+                <a asp-action="Index" class="btn btn-secondary">Retour</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+@model IEnumerable<GestionFormations.Models.Categorie>
+@{
+    ViewData["Title"] = "Catégories";
+}
+
+<div class="page-header">
+    <h2><i class="bi bi-tags me-2"></i>Catégories</h2>
+    <p>Gestion des catégories de formations</p>
+</div>
+
+<div class="d-flex justify-content-end mb-4">
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus me-2"></i>Ajouter</a>
+</div>
+
+<div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>@Html.DisplayNameFor(m => m.First().Nom)</th>
+                        <th>@Html.DisplayNameFor(m => m.First().Description)</th>
+                        <th>Formations</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@item.Nom</td>
+                            <td>@item.Description</td>
+                            <td><span class="badge bg-info rounded-pill">@(item.Formations?.Count ?? 0)</span></td>
+                            <td class="text-center">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info"><i class="bi bi-info-circle"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

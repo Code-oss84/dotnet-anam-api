@@ -1,0 +1,35 @@
+@model GestionFormations.Models.Formateur
+@{
+    ViewData["Title"] = "Supprimer le Formateur";
+}
+
+<div class="page-header">
+    <h2 class="text-danger"><i class="bi bi-trash me-2"></i>Supprimer le Formateur</h2>
+    <p>Confirmer la suppression</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div class="card-body text-center p-4">
+                <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:100px;height:100px;">
+                    <i class="bi bi-person display-4"></i>
+                </div>
+                <h4 class="fw-bold">@Model.Prenom @Model.Nom</h4>
+                <p class="text-muted">@Model.Email</p>
+                <p class="text-muted">@Model.Specialite</p>
+                <div class="alert alert-warning mt-3">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Êtes-vous sûr de vouloir supprimer ce formateur ?
+                </div>
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex justify-content-center gap-2 mt-4">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Supprimer</button>
+                        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

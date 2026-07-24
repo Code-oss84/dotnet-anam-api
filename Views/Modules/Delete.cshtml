@@ -1,0 +1,45 @@
+@model GestionFormations.Models.Module
+@{
+    ViewData["Title"] = "Supprimer le Module";
+}
+
+<div class="page-header">
+    <h2 class="text-danger"><i class="bi bi-trash me-2"></i>Supprimer le Module</h2>
+    <p>Confirmer la suppression du module</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div class="card-body p-4">
+                <h4 class="fw-bold mb-3">@Model.Titre</h4>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <small class="text-uppercase fw-semibold text-muted d-block mb-1">Formation</small>
+                        <span class="fw-semibold">@(Model.Formation?.Titre ?? "—")</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <small class="text-uppercase fw-semibold text-muted d-block mb-1">Ordre</small>
+                        <span class="badge bg-secondary rounded-pill">@Model.Ordre</span>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning d-flex align-items-center rounded-3" role="alert" style="border: none;">
+                    <i class="bi bi-exclamation-triangle-fill me-3 fs-5"></i>
+                    <div>
+                        <strong>Attention !</strong> Êtes-vous sûr de vouloir supprimer ce module et <strong>tous ses contenus</strong> ? Cette action est irréversible.
+                    </div>
+                </div>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Supprimer</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+@model IEnumerable<GestionFormations.Models.Module>
+@{
+    ViewData["Title"] = "Modules";
+}
+
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-center w-100">
+        <div>
+            <h2><i class="bi bi-collection me-2"></i>Modules</h2>
+            <p>Gestion des modules de formation</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-2"></i>Ajouter</a>
+    </div>
+</div>
+
+<div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ordre</th>
+                        <th>Titre</th>
+                        <th>Formation</th>
+                        <th>Durée</th>
+                        <th>Contenus</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><span class="badge bg-secondary rounded-pill">@item.Ordre</span></td>
+                            <td class="fw-bold">@item.Titre</td>
+                            <td>@item.Formation?.Titre</td>
+                            <td><i class="bi bi-clock me-1 text-muted"></i>@item.DureeHeures h</td>
+                            <td><span class="badge bg-info rounded-pill">@(item.Contenus?.Count ?? 0)</span></td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="Détails"><i class="bi bi-info-circle"></i></a>
+                                <a asp-controller="Contenus" asp-action="Index" asp-route-moduleId="@item.Id" class="btn btn-sm btn-outline-secondary" title="Contenus"><i class="bi bi-file-earmark-text"></i></a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary" title="Modifier"><i class="bi bi-pencil"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Supprimer"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

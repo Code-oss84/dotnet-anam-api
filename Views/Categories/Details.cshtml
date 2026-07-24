@@ -1,0 +1,30 @@
+@model GestionFormations.Models.Categorie
+@{
+    ViewData["Title"] = "Détails Catégorie";
+}
+
+<div class="page-header">
+    <h2><i class="bi bi-info-circle me-2"></i>@Model.Nom</h2>
+    <p>Détails de la catégorie</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-8">
+        <div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div class="card-body p-4">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 text-uppercase small fw-semibold">Nom</dt>
+                    <dd class="col-sm-8 fs-5 fw-bold">@Model.Nom</dd>
+                    <dt class="col-sm-4 text-uppercase small fw-semibold">Description</dt>
+                    <dd class="col-sm-8">@(Model.Description ?? "Aucune description")</dd>
+                    <dt class="col-sm-4 text-uppercase small fw-semibold">Formations</dt>
+                    <dd class="col-sm-9"><span class="badge bg-info rounded-pill fs-6">@(Model.Formations?.Count ?? 0)</span></dd>
+                </dl>
+            </div>
+            <div class="card-footer bg-white border-0 pb-4">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="bi bi-pencil me-2"></i>Modifier</a>
+                <a asp-action="Index" class="btn btn-secondary">Retour</a>
+            </div>
+        </div>
+    </div>
+</div>

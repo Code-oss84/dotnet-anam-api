@@ -1,0 +1,92 @@
+@model GestionFormations.Models.Contenu
+@{
+    ViewData["Title"] = "Créer un Contenu";
+}
+
+<div class="page-header">
+    <h2><i class="bi bi-plus-circle me-2"></i>Créer un Contenu</h2>
+    <p>Ajouter un nouveau contenu pédagogique</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div class="card-body p-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Titre" class="form-label text-uppercase fw-semibold small text-muted"></label>
+                        <input asp-for="Titre" class="form-control" style="border: 2px solid #e0e0e0; border-radius: 0.5rem;" />
+                        <span asp-validation-for="Titre" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label text-uppercase fw-semibold small text-muted"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3" style="border: 2px solid #e0e0e0; border-radius: 0.5rem;"></textarea>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label asp-for="Type" class="form-label text-uppercase fw-semibold small text-muted"></label>
+                            <select asp-for="Type" class="form-select" style="border: 2px solid #e0e0e0; border-radius: 0.5rem;">
+                                <option value="Cours">Cours</option>
+                                <option value="Exercice">Exercice</option>
+                                <option value="Examen">Examen</option>
+                                <option value="Quiz">Quiz</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Ordre" class="form-label text-uppercase fw-semibold small text-muted"></label>
+                            <input asp-for="Ordre" class="form-control" style="border: 2px solid #e0e0e0; border-radius: 0.5rem;" />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="DureeMinutes" class="form-label text-uppercase fw-semibold small text-muted"></label>
+                            <input asp-for="DureeMinutes" class="form-control" style="border: 2px solid #e0e0e0; border-radius: 0.5rem;" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Texte" class="form-label text-uppercase fw-semibold small text-muted"></label>
+                        <textarea asp-for="Texte" class="form-control" rows="6" placeholder="Contenu textuel du cours..." style="border: 2px solid #e0e0e0; border-radius: 0.5rem;"></textarea>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="VideoUrl" class="form-label text-uppercase fw-semibold small text-muted"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="bi bi-play-circle text-primary"></i></span>
+                                <input asp-for="VideoUrl" class="form-control" placeholder="URL de la vidéo" style="border: 2px solid #e0e0e0; border-radius: 0.5rem;" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="DocumentUrl" class="form-label text-uppercase fw-semibold small text-muted"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="bi bi-file-earmark text-secondary"></i></span>
+                                <input asp-for="DocumentUrl" class="form-control" placeholder="URL du document" style="border: 2px solid #e0e0e0; border-radius: 0.5rem;" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="ModuleId" class="form-label text-uppercase fw-semibold small text-muted"></label>
+                        <select asp-for="ModuleId" class="form-select" style="border: 2px solid #e0e0e0; border-radius: 0.5rem;">
+                            @if (ViewBag.Modules != null)
+                            {
+                                @foreach (GestionFormations.Models.Module m in ViewBag.Modules)
+                                {
+                                    <option value="@m.Id" selected="@(m.Id == Model.ModuleId)">@m.Formation?.Titre - @m.Titre</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Créer</button>
+                        <a asp-action="Index" asp-route-moduleId="@Model.ModuleId" class="btn btn-outline-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+@model GestionFormations.Models.Question
+@{
+    ViewData["Title"] = "Créer une Question";
+    var nbChoix = 4;
+}
+
+<div class="page-header">
+    <h2><i class="bi bi-plus-circle me-2"></i>Créer une Question</h2>
+    <p>Ajouter une nouvelle question</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-8">
+        <div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div class="card-body p-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="mb-3">
+                        <label asp-for="Enonce" class="form-label fw-semibold text-uppercase small"></label>
+                        <textarea asp-for="Enonce" class="form-control" rows="3" style="border: 2px solid #dee2e6; border-radius: 0.5rem;"></textarea>
+                        <span asp-validation-for="Enonce" class="text-danger"></span>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label asp-for="Type" class="form-label fw-semibold text-uppercase small"></label>
+                            <select asp-for="Type" class="form-select" id="typeSelect" style="border: 2px solid #dee2e6; border-radius: 0.5rem;">
+                                <option value="QCM">QCM</option>
+                                <option value="TexteLibre">Texte Libre</option>
+                                <option value="VraiFaux">Vrai/Faux</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Points" class="form-label fw-semibold text-uppercase small"></label>
+                            <input asp-for="Points" class="form-control" style="border: 2px solid #dee2e6; border-radius: 0.5rem;" />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="ContenuId" class="form-label fw-semibold text-uppercase small"></label>
+                            <select asp-for="ContenuId" class="form-select" style="border: 2px solid #dee2e6; border-radius: 0.5rem;">
+                                @if (ViewBag.Contenus != null)
+                                {
+                                    @foreach (GestionFormations.Models.Contenu c in ViewBag.Contenus)
+                                    {
+                                        <option value="@c.Id" selected="@(c.Id == Model.ContenuId)">@c.Module?.Formation?.Titre - @c.Titre</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="qcmSection">
+                        <h5 class="fw-bold"><i class="bi bi-list-check me-2"></i>Choix de réponses</h5>
+                        @for (int i = 0; i < nbChoix; i++)
+                        {
+                            <div class="row g-2 mb-2">
+                                <div class="col-md-9">
+                                    <input type="text" name="choixTextes" class="form-control" placeholder="Choix @(i + 1)" style="border: 2px solid #dee2e6; border-radius: 0.5rem;" />
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check mt-2">
+                                        <input type="checkbox" name="choixCorrects" value="true" class="form-check-input" />
+                                        <label class="form-check-label">Correct</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Créer</button>
+                        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('typeSelect').addEventListener('change', function() {
+            document.getElementById('qcmSection').style.display = this.value === 'QCM' ? 'block' : 'none';
+        });
+    </script>
+}

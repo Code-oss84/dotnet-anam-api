@@ -1,0 +1,57 @@
+@page
+@model GestionFormations.Areas.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Inscription";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-body p-5">
+                <h2 class="text-center mb-4"><i class="bi bi-person-plus me-2"></i>Inscription</h2>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Input.Nom" class="form-label"></label>
+                            <input asp-for="Input.Nom" class="form-control" autocomplete="nom" />
+                            <span asp-validation-for="Input.Nom" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Input.Prenom" class="form-label"></label>
+                            <input asp-for="Input.Prenom" class="form-control" autocomplete="prenom" />
+                            <span asp-validation-for="Input.Prenom" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.Email" class="form-label"></label>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.Password" class="form-label"></label>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.ConfirmPassword" class="form-label"></label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-person-plus me-2"></i>S'inscrire</button>
+                </form>
+
+                <hr />
+                <p class="text-center">
+                    Déjà inscrit ? <a asp-page="Login">Se connecter</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

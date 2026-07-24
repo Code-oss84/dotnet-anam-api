@@ -1,0 +1,59 @@
+@model GestionFormations.Models.Contenu
+@{
+    ViewData["Title"] = "Supprimer le Contenu";
+}
+
+<div class="page-header">
+    <h2 class="text-danger"><i class="bi bi-trash me-2"></i>Supprimer le Contenu</h2>
+    <p>Confirmer la suppression du contenu</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div class="card-body p-4">
+                <h4 class="fw-bold mb-3">@Model.Titre</h4>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <small class="text-uppercase fw-semibold text-muted d-block mb-1">Type</small>
+                        @switch (Model.Type)
+                        {
+                            case GestionFormations.Models.TypeContenu.Cours:
+                                <span class="content-tag cours"><i class="bi bi-book me-1"></i>Cours</span>
+                                break;
+                            case GestionFormations.Models.TypeContenu.Exercice:
+                                <span class="content-tag exercice"><i class="bi bi-pencil me-1"></i>Exercice</span>
+                                break;
+                            case GestionFormations.Models.TypeContenu.Examen:
+                                <span class="content-tag examen"><i class="bi bi-clipboard-check me-1"></i>Examen</span>
+                                break;
+                            case GestionFormations.Models.TypeContenu.Quiz:
+                                <span class="content-tag quiz"><i class="bi bi-question-circle me-1"></i>Quiz</span>
+                                break;
+                        }
+                    </div>
+                    <div class="col-sm-6">
+                        <small class="text-uppercase fw-semibold text-muted d-block mb-1">Module</small>
+                        <span class="fw-semibold">@(Model.Module?.Titre ?? "—")</span>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning d-flex align-items-center rounded-3" role="alert" style="border: none;">
+                    <i class="bi bi-exclamation-triangle-fill me-3 fs-5"></i>
+                    <div>
+                        <strong>Attention !</strong> Êtes-vous sûr de vouloir supprimer ce contenu et <strong>toutes ses questions</strong> ? Cette action est irréversible.
+                    </div>
+                </div>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Supprimer</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

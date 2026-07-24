@@ -1,0 +1,38 @@
+@model GestionFormations.Models.Categorie
+@{
+    ViewData["Title"] = "Supprimer Catégorie";
+}
+
+<div class="page-header">
+    <h2 class="text-danger"><i class="bi bi-trash me-2"></i>Supprimer la Catégorie</h2>
+    <p>Confirmer la suppression</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card" style="border: none; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width:56px;height:56px;">
+                        <i class="bi bi-tag fs-4"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-0 fw-bold">@Model.Nom</h4>
+                        <p class="text-muted mb-0">@Model.Description</p>
+                    </div>
+                </div>
+                <div class="alert alert-warning mt-3">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Êtes-vous sûr de vouloir supprimer cette catégorie ?
+                </div>
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Supprimer</button>
+                        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

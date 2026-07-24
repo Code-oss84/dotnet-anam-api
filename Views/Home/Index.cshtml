@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "Accueil";
+}
+
+<div class="text-center py-5 mb-2">
+    <div class="d-inline-flex align-items-center justify-content-center rounded-4 mb-4" style="width:80px;height:80px;background:linear-gradient(135deg, var(--primary), var(--secondary));box-shadow: 0 8px 30px rgba(13,110,253,0.25);">
+        <i class="bi bi-mortarboard-fill text-white fs-1"></i>
+    </div>
+    <h1 class="display-4 fw-bold" style="color: var(--primary);">GestionFormations</h1>
+    <p class="lead text-muted mt-3 mx-auto" style="max-width: 600px;">Plateforme de gestion des formations en ligne avec Formateur IA intégré</p>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-3">
+        <div class="card h-100 text-center p-3" style="border:none;border-radius:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:transform 0.2s ease;">
+            <div class="card-body">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-4 mb-3" style="width:64px;height:64px;background:linear-gradient(135deg, #0d6efd, #6610f2);box-shadow:0 4px 15px rgba(13,110,253,0.3);">
+                    <i class="bi bi-book text-white fs-4"></i>
+                </div>
+                <h5 class="card-title fw-bold">Formations</h5>
+                <p class="card-text text-muted">Découvrez nos formations variées en développement, data science et plus</p>
+                <a asp-controller="Formations" asp-action="Index" class="btn btn-primary px-4" style="border-radius:0.5rem;">
+                    <i class="bi bi-arrow-right me-1"></i>Voir les formations
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 text-center p-3" style="border:none;border-radius:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:transform 0.2s ease;">
+            <div class="card-body">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-4 mb-3" style="width:64px;height:64px;background:linear-gradient(135deg, #198754, #20c997);box-shadow:0 4px 15px rgba(25,135,84,0.3);">
+                    <i class="bi bi-robot text-white fs-4"></i>
+                </div>
+                <h5 class="card-title fw-bold">Formateur IA</h5>
+                <p class="card-text text-muted">Apprenez avec un assistant IA interactif basé sur Anam.ai</p>
+                <a asp-controller="AiTrainer" asp-action="Index" class="btn btn-success px-4" style="border-radius:0.5rem;">
+                    <i class="bi bi-play-circle me-1"></i>Essayer
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 text-center p-3" style="border:none;border-radius:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:transform 0.2s ease;">
+            <div class="card-body">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-4 mb-3" style="width:64px;height:64px;background:linear-gradient(135deg, #0dcaf0, #0d6efd);box-shadow:0 4px 15px rgba(13,202,240,0.3);">
+                    <i class="bi bi-person-badge text-white fs-4"></i>
+                </div>
+                <h5 class="card-title fw-bold">Formateurs</h5>
+                <p class="card-text text-muted">Des experts qualifiés pour vous accompagner</p>
+                <a asp-controller="Formations" asp-action="Index" class="btn btn-info text-white px-4" style="border-radius:0.5rem;">
+                    <i class="bi bi-info-circle me-1"></i>En savoir plus
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 text-center p-3" style="border:none;border-radius:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:transform 0.2s ease;">
+            <div class="card-body">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-4 mb-3" style="width:64px;height:64px;background:linear-gradient(135deg, #ffc107, #fd7e14);box-shadow:0 4px 15px rgba(255,193,7,0.3);">
+                    <i class="bi bi-clipboard-check text-white fs-4"></i>
+                </div>
+                <h5 class="card-title fw-bold">Quiz & Examens</h5>
+                <p class="card-text text-muted">Testez vos connaissances avec des quiz interactifs</p>
+                <a asp-controller="Formations" asp-action="Index" class="btn btn-warning px-4" style="border-radius:0.5rem;">
+                    <i class="bi bi-lightning me-1"></i>Commencer
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card h-100" style="border:none;border-radius:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.06);overflow:hidden;">
+            <div class="card-header text-white fw-bold d-flex align-items-center border-0" style="background:linear-gradient(135deg, var(--primary), #6610f2);padding:1rem 1.25rem;">
+                <i class="bi bi-lightning-charge-fill me-2"></i>
+                <span>Comment ça marche ?</span>
+            </div>
+            <div class="card-body p-0">
+                <ol class="list-group list-group-numbered list-group-flush">
+                    <li class="list-group-item d-flex align-items-start py-3 px-4">
+                        <span class="fw-semibold">Créez votre compte gratuitement</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-start py-3 px-4">
+                        <span class="fw-semibold">Parcourez le catalogue de formations</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-start py-3 px-4">
+                        <span class="fw-semibold">Inscrivez-vous à la formation de votre choix</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-start py-3 px-4">
+                        <span class="fw-semibold">Suivez les cours et passez les quiz</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-start py-3 px-4">
+                        <span class="fw-semibold">Interagissez avec le formateur IA</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-start py-3 px-4">
+                        <span class="fw-semibold">Obtenez votre certification</span>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100" style="border:none;border-radius:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.06);overflow:hidden;">
+            <div class="card-header text-white fw-bold d-flex align-items-center border-0" style="background:linear-gradient(135deg, #198754, #20c997);padding:1rem 1.25rem;">
+                <i class="bi bi-robot me-2"></i>
+                <span>Formateur IA Intégré</span>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">Notre formateur IA (powered by Anam.ai) vous offre :</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex align-items-center py-3 border-0">
+                        <span class="d-inline-flex align-items-center justify-content-center rounded-circle me-3 flex-shrink-0" style="width:32px;height:32px;background:rgba(25,135,84,0.1);">
+                            <i class="bi bi-check-lg text-success"></i>
+                        </span>
+                        <span class="fw-semibold">Présentation interactive des modules</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center py-3 border-0">
+                        <span class="d-inline-flex align-items-center justify-content-center rounded-circle me-3 flex-shrink-0" style="width:32px;height:32px;background:rgba(25,135,84,0.1);">
+                            <i class="bi bi-check-lg text-success"></i>
+                        </span>
+                        <span class="fw-semibold">Réponses à vos questions en temps réel</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center py-3 border-0">
+                        <span class="d-inline-flex align-items-center justify-content-center rounded-circle me-3 flex-shrink-0" style="width:32px;height:32px;background:rgba(25,135,84,0.1);">
+                            <i class="bi bi-check-lg text-success"></i>
+                        </span>
+                        <span class="fw-semibold">Explication audio avec avatar réaliste</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center py-3 border-0">
+                        <span class="d-inline-flex align-items-center justify-content-center rounded-circle me-3 flex-shrink-0" style="width:32px;height:32px;background:rgba(25,135,84,0.1);">
+                            <i class="bi bi-check-lg text-success"></i>
+                        </span>
+                        <span class="fw-semibold">Support 24h/24 et 7j/7</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
