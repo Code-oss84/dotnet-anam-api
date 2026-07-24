@@ -187,6 +187,10 @@ Formateurs ─< Formations
 Apprenants ─< Inscriptions
 ```
 
+## 🎥 Demo
+
+➡️ [Voir la vidéo](./demo.mp4)
+
 ## Licences
 
 Ce projet utilise les librairies suivantes :
