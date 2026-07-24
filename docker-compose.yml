@@ -11,6 +11,7 @@ services:
     volumes:
       - sqlite-data:/app/data
     restart: unless-stopped
+    
 
 volumes:
   sqlite-data:
