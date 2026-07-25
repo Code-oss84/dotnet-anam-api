@@ -4,42 +4,173 @@
     ViewData["Title"] = "Connexion";
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card shadow">
-            <div class="card-body p-5">
-                <h2 class="text-center mb-4"><i class="bi bi-box-arrow-in-right me-2"></i>Connexion</h2>
+<style>
+    .auth-card {
+        border: 1px solid var(--border);
+        border-radius: 1.25rem;
+        background-color: var(--surface);
+        box-shadow: 0 20px 25px -5px rgba(5, 150, 105, 0.08), 0 8px 10px -6px rgba(5, 150, 105, 0.08);
+        overflow: hidden;
+        position: relative;
+    }
+    .auth-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #059669, #34d399);
+    }
+    .form-control-pro {
+        border: 1.5px solid var(--border);
+        border-left: none;
+        border-radius: 0 0.75rem 0.75rem 0;
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+        background-color: var(--surface-alt);
+        transition: all 0.2s ease;
+        width: 100%;
+    }
+    .form-control-pro:focus {
+        border-color: #059669;
+        background-color: var(--surface);
+        box-shadow: none;
+    }
+    .input-group:focus-within {
+        box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12);
+        border-radius: 0.75rem;
+    }
+    .input-group:focus-within .input-group-text-pro,
+    .input-group:focus-within .form-control-pro {
+        border-color: #059669;
+    }
+    .input-group-text-pro {
+        background-color: var(--surface-alt);
+        border: 1.5px solid var(--border);
+        border-right: none;
+        border-radius: 0.75rem 0 0 0.75rem;
+        color: #059669;
+        padding-left: 1.2rem;
+        padding-right: 1.2rem;
+        transition: all 0.2s ease;
+    }
+    .btn-pro-green {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        border: none;
+        border-radius: 0.75rem;
+        color: #fff;
+        font-weight: 600;
+        padding: 0.95rem 1.5rem;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+    }
+    .btn-pro-green:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(5, 150, 105, 0.35);
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        color: #fff;
+    }
+    .copy-btn {
+        background-color: #d1fae5;
+        border: 1px solid #a7f3d0;
+        color: #065f46;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.6rem;
+        border-radius: 0.35rem;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        font-weight: 600;
+    }
+    .copy-btn:hover {
+        background-color: #059669;
+        color: #fff;
+    }
+</style>
 
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+<div class="row justify-content-center py-5 my-2">
+    <div class="col-xl-6 col-lg-7 col-md-9">
+        <div class="card auth-card">
+            <div class="card-body p-4 p-md-5">
+                
+                <!-- Header / Pro Icon Badge -->
+                <div class="text-center mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3 shadow-sm" style="width: 64px; height: 64px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); color: #059669; border: 1.5px solid #a7f3d0;">
+                        <i class="bi bi-person-workspace fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold mb-1" style="color: var(--text); letter-spacing: -0.02em;">Espace de Connexion</h3>
+                    <p class="text-muted" style="font-size: 0.95rem;">Identifiez-vous pour accéder à vos formations</p>
+                </div>
+
+                <!-- Admin Quick Info Box with Pro Badge & Copy Buttons -->
+                <div class="p-3 mb-4 rounded-3" style="background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #065f46;">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-shield-check-fill me-2 text-success fs-5"></i>
+                            <span class="fw-bold" style="font-size: 0.9rem;">Compte Administrateur Rapide :</span>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1" style="font-size: 0.7rem;">Accès Test</span>
+                    </div>
+                    <div class="ps-4 d-flex flex-column gap-2" style="font-size: 0.88rem;">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <span><i class="bi bi-envelope-at me-1 text-muted"></i><strong>Email :</strong> <span id="adminEmail" class="font-monospace">admin@gestionformations.com</span></span>
+                            <button type="button" class="copy-btn" onclick="copyText('adminEmail', this)"><i class="bi bi-clipboard me-1"></i>Copier</button>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <span><i class="bi bi-lock me-1 text-muted"></i><strong>Mot de passe :</strong> <span id="adminPass" class="font-monospace">Admin@123</span></span>
+                            <button type="button" class="copy-btn" onclick="copyText('adminPass', this)"><i class="bi bi-clipboard me-1"></i>Copier</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3 p-3 rounded-3" role="alert" style="background-color: #fee2e2; border: 1px solid #fecaca; font-size: 0.88rem;"></div>
 
                 <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                    <div class="mb-3">
-                        <label asp-for="Input.Email" class="form-label"></label>
-                        <input asp-for="Input.Email" class="form-control" autocomplete="username" />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    <div class="mb-4">
+                        <label asp-for="Input.Email" class="form-label fw-semibold mb-2" style="font-size: 0.85rem; color: var(--text-muted);">
+                            <i class="bi bi-envelope-fill me-1 text-success"></i> Adresse Email
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text-pro">
+                                <i class="bi bi-at fs-5"></i>
+                            </span>
+                            <input asp-for="Input.Email" class="form-control form-control-pro shadow-none" autocomplete="username" placeholder="nom@exemple.com" />
+                        </div>
+                        <span asp-validation-for="Input.Email" class="text-danger small mt-1 d-block"></span>
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="Input.Password" class="form-label"></label>
-                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" />
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label asp-for="Input.Password" class="form-label fw-semibold mb-0" style="font-size: 0.85rem; color: var(--text-muted);">
+                                <i class="bi bi-key-fill me-1 text-success"></i> Mot de passe
+                            </label>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text-pro">
+                                <i class="bi bi-shield-shaded fs-5"></i>
+                            </span>
+                            <input asp-for="Input.Password" class="form-control form-control-pro shadow-none" autocomplete="current-password" placeholder="••••••••" />
+                        </div>
+                        <span asp-validation-for="Input.Password" class="text-danger small mt-1 d-block"></span>
                     </div>
-                    <div class="mb-3 form-check">
-                        <input asp-for="Input.RememberMe" class="form-check-input" />
-                        <label asp-for="Input.RememberMe" class="form-check-label"></label>
+                    
+                    <div class="mb-4 form-check d-flex align-items-center">
+                        <input asp-for="Input.RememberMe" class="form-check-input me-2 shadow-none" style="width: 1.15em; height: 1.15em; cursor: pointer; border-color: #059669; accent-color: #059669;" />
+                        <label asp-for="Input.RememberMe" class="form-check-label text-muted" style="font-size: 0.95rem; cursor: pointer;"></label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-box-arrow-in-right me-2"></i>Se connecter</button>
+                    
+                    <button type="submit" class="btn btn-pro-green w-100 mb-3 d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-box-arrow-in-right fs-5"></i>
+                        <span>Se connecter à la plateforme</span>
+                    </button>
                 </form>
 
-                <hr />
-                <p class="text-center">
-                    Pas encore inscrit ? <a asp-page="Register">Créer un compte</a>
-                </p>
-
-                <div class="alert alert-info mt-3 small">
-                    <strong>Compte Admin :</strong><br />
-                    Email : admin@gestionformations.com<br />
-                    Mot de passe : Admin@123
+                <div class="text-center mt-4 pt-2 border-top" style="border-color: var(--border) !important;">
+                    <span class="text-muted" style="font-size: 0.9rem;">Vous n'avez pas de compte ? </span>
+                    <a asp-page="Register" class="fw-bold" style="color: #059669; text-decoration: none; font-size: 0.9rem;">Créer un compte <i class="bi bi-arrow-right ms-1"></i></a>
                 </div>
+
             </div>
         </div>
     </div>
@@ -47,4 +178,20 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function copyText(elementId, btn) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check2 me-1"></i>Copié !';
+                btn.style.backgroundColor = '#059669';
+                btn.style.color = '#fff';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.backgroundColor = '#d1fae5';
+                    btn.style.color = '#065f46';
+                }, 1500);
+            });
+        }
+    </script>
 }
