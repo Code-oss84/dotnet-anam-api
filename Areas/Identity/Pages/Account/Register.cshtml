@@ -4,49 +4,175 @@
     ViewData["Title"] = "Inscription";
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow">
-            <div class="card-body p-5">
-                <h2 class="text-center mb-4"><i class="bi bi-person-plus me-2"></i>Inscription</h2>
+<style>
+    .auth-card {
+        border: 1px solid var(--border);
+        border-radius: 1.25rem;
+        background-color: var(--surface);
+        box-shadow: 0 20px 25px -5px rgba(5, 150, 105, 0.08), 0 8px 10px -6px rgba(5, 150, 105, 0.08);
+        overflow: hidden;
+        position: relative;
+    }
+    .auth-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #059669, #34d399);
+    }
+    .form-control-pro {
+        border: 1.5px solid var(--border);
+        border-left: none;
+        border-radius: 0 0.75rem 0.75rem 0;
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+        background-color: var(--surface-alt);
+        transition: all 0.2s ease;
+        width: 100%;
+    }
+    .form-control-pro:focus {
+        border-color: #059669;
+        background-color: var(--surface);
+        box-shadow: none;
+    }
+    .input-group:focus-within {
+        box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12);
+        border-radius: 0.75rem;
+    }
+    .input-group:focus-within .input-group-text-pro,
+    .input-group:focus-within .form-control-pro {
+        border-color: #059669;
+    }
+    .input-group-text-pro {
+        background-color: var(--surface-alt);
+        border: 1.5px solid var(--border);
+        border-right: none;
+        border-radius: 0.75rem 0 0 0.75rem;
+        color: #059669;
+        padding-left: 1.2rem;
+        padding-right: 1.2rem;
+        transition: all 0.2s ease;
+    }
+    .btn-pro-green {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        border: none;
+        border-radius: 0.75rem;
+        color: #fff;
+        font-weight: 600;
+        padding: 0.95rem 1.5rem;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+    }
+    .btn-pro-green:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(5, 150, 105, 0.35);
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        color: #fff;
+    }
+</style>
 
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+<div class="row justify-content-center py-5 my-2">
+    <div class="col-xl-7 col-lg-8 col-md-10">
+        <div class="card auth-card">
+            <div class="card-body p-4 p-md-5">
+                
+                <!-- Header / Pro Icon Badge -->
+                <div class="text-center mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3 shadow-sm" style="width: 64px; height: 64px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); color: #059669; border: 1.5px solid #a7f3d0;">
+                        <i class="bi bi-person-plus-fill fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold mb-1" style="color: var(--text); letter-spacing: -0.02em;">Créer un compte</h3>
+                    <p class="text-muted" style="font-size: 0.95rem;">Rejoignez notre plateforme de formation en ligne</p>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3 p-3 rounded-3" role="alert" style="background-color: #fee2e2; border: 1px solid #fecaca; font-size: 0.88rem;"></div>
 
                 <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label asp-for="Input.Nom" class="form-label"></label>
-                            <input asp-for="Input.Nom" class="form-control" autocomplete="nom" />
-                            <span asp-validation-for="Input.Nom" class="text-danger"></span>
+                    
+                    <!-- Nom & Prénom Row -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label asp-for="Input.Nom" class="form-label fw-semibold mb-2" style="font-size: 0.85rem; color: var(--text-muted);">
+                                <i class="bi bi-person-fill me-1 text-success"></i> Nom
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text input-group-text-pro">
+                                    <i class="bi bi-card-heading"></i>
+                                </span>
+                                <input asp-for="Input.Nom" class="form-control form-control-pro shadow-none" autocomplete="nom" placeholder="Votre nom" />
+                            </div>
+                            <span asp-validation-for="Input.Nom" class="text-danger small mt-1 d-block"></span>
                         </div>
                         <div class="col-md-6">
-                            <label asp-for="Input.Prenom" class="form-label"></label>
-                            <input asp-for="Input.Prenom" class="form-control" autocomplete="prenom" />
-                            <span asp-validation-for="Input.Prenom" class="text-danger"></span>
+                            <label asp-for="Input.Prenom" class="form-label fw-semibold mb-2" style="font-size: 0.85rem; color: var(--text-muted);">
+                                <i class="bi bi-person-badge-fill me-1 text-success"></i> Prénom
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text input-group-text-pro">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                                <input asp-for="Input.Prenom" class="form-control form-control-pro shadow-none" autocomplete="prenom" placeholder="Votre prénom" />
+                            </div>
+                            <span asp-validation-for="Input.Prenom" class="text-danger small mt-1 d-block"></span>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="Input.Email" class="form-label"></label>
-                        <input asp-for="Input.Email" class="form-control" autocomplete="username" />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                    <!-- Email -->
+                    <div class="mb-4">
+                        <label asp-for="Input.Email" class="form-label fw-semibold mb-2" style="font-size: 0.85rem; color: var(--text-muted);">
+                            <i class="bi bi-envelope-fill me-1 text-success"></i> Adresse Email
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text-pro">
+                                <i class="bi bi-at fs-5"></i>
+                            </span>
+                            <input asp-for="Input.Email" class="form-control form-control-pro shadow-none" autocomplete="username" placeholder="nom@exemple.com" />
+                        </div>
+                        <span asp-validation-for="Input.Email" class="text-danger small mt-1 d-block"></span>
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="Input.Password" class="form-label"></label>
-                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" />
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                    <!-- Password -->
+                    <div class="mb-4">
+                        <label asp-for="Input.Password" class="form-label fw-semibold mb-2" style="font-size: 0.85rem; color: var(--text-muted);">
+                            <i class="bi bi-key-fill me-1 text-success"></i> Mot de passe
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text-pro">
+                                <i class="bi bi-shield-shaded fs-5"></i>
+                            </span>
+                            <input asp-for="Input.Password" class="form-control form-control-pro shadow-none" autocomplete="new-password" placeholder="••••••••" />
+                        </div>
+                        <span asp-validation-for="Input.Password" class="text-danger small mt-1 d-block"></span>
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="Input.ConfirmPassword" class="form-label"></label>
-                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" />
-                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
+                    <!-- Confirm Password -->
+                    <div class="mb-4">
+                        <label asp-for="Input.ConfirmPassword" class="form-label fw-semibold mb-2" style="font-size: 0.85rem; color: var(--text-muted);">
+                            <i class="bi bi-check2-all me-1 text-success"></i> Confirmer le mot de passe
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text input-group-text-pro">
+                                <i class="bi bi-shield-check fs-5"></i>
+                            </span>
+                            <input asp-for="Input.ConfirmPassword" class="form-control form-control-pro shadow-none" autocomplete="new-password" placeholder="••••••••" />
+                        </div>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger small mt-1 d-block"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-person-plus me-2"></i>S'inscrire</button>
+
+                    <button type="submit" class="btn btn-pro-green w-100 mb-3 d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-person-plus-fill fs-5"></i>
+                        <span>S'inscrire maintenant</span>
+                    </button>
                 </form>
 
-                <hr />
-                <p class="text-center">
-                    Déjà inscrit ? <a asp-page="Login">Se connecter</a>
-                </p>
+                <div class="text-center mt-4 pt-3 border-top" style="border-color: var(--border) !important;">
+                    <span class="text-muted" style="font-size: 0.9rem;">Déjà inscrit ? </span>
+                    <a asp-page="Login" class="fw-bold" style="color: #059669; text-decoration: none; font-size: 0.9rem;">Se connecter <i class="bi bi-arrow-right ms-1"></i></a>
+                </div>
+
             </div>
         </div>
     </div>
