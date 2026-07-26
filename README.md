@@ -187,6 +187,29 @@ Formateurs ─< Formations
 Apprenants ─< Inscriptions
 ```
 
+## Screenshots
+
+### Catalogue des Formations
+![Catalogue des Formations](./wwwroot/screenshots/catalogue-formations.png)
+
+### Catalogue des Modules
+![Catalogue des Formations](./wwwroot/screenshots/Modules.png)
+
+### Détail d'une Formation avec ses Modules
+![Détail Formation](./wwwroot/screenshots/detail-formation-modules.png)
+
+### Formateur IA
+![Formateur IA](./wwwroot/screenshots/formateur-ia.png)
+
+### Formateur 
+![Formateur](./wwwroot/screenshots/formateur.png)
+
+### Dashboard Admin
+![Dashboard Admin](./wwwroot/screenshots/dashboard-admin.png)
+
+### Page de Login
+![Page Login](./wwwroot/screenshots/page-login.png)
+
 ## Licences
 
 Ce projet utilise les librairies suivantes :

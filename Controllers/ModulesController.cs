@@ -6,7 +6,6 @@ using GestionFormations.Models;
 
 namespace GestionFormations.Controllers;
 
-[Authorize(Roles = "Admin,Formateur")]
 public class ModulesController : Controller
 {
     private readonly ApplicationDbContext _context;

@@ -29,7 +29,6 @@ public class AiTrainerController : Controller
     {
         var formations = await _context.Formations
             .Include(f => f.Categorie)
-            .Where(f => f.EstActive)
             .ToListAsync();
 
         ViewBag.Formations = formations;
